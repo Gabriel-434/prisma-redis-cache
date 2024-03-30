@@ -12,6 +12,9 @@
   "type": "module",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "files": [
+    "dist/src/**/*"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "node --test --watch"
@@ -31,5 +34,18 @@
   },
   "dependencies": {
     "superjson": "^2.2.1"
-  }
+  },
+  "directories": {
+    "lib": "src",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabriel-434/prisma-extension-redis-cache.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Gabriel-434/prisma-extension-redis-cache/issues"
+  },
+  "homepage": "https://github.com/Gabriel-434/prisma-extension-redis-cache#readme"
 }
