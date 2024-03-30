@@ -1,8 +1,7 @@
 name: Test Prisma Extension
 
 on:
-  push:
-    branches: [ "main" ]
+  push
 
 jobs:
   test_cache:
@@ -39,3 +38,5 @@ jobs:
 
     - name: Run Prisma Extension tests
       run: node --test
+      env:
+        REDIS_CONNECTION_URL: "redis://redis"
