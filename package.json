@@ -1,6 +1,6 @@
 {
-  "name": "prisma-extension-redis-cache",
-  "version": "0.1.0",
+  "name": "prisma-redis-cache",
+  "version": "0.1.1",
   "author": "Gabriel434",
   "description": "Allows caching Prisma operations using Redis with strong type-safety.",
   "keywords": [
@@ -41,11 +41,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Gabriel-434/prisma-extension-redis-cache.git"
+    "url": "git+https://github.com/Gabriel-434/prisma-redis-cache.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Gabriel-434/prisma-extension-redis-cache/issues"
+    "url": "https://github.com/Gabriel-434/prisma-redis-cache/issues"
   },
-  "homepage": "https://github.com/Gabriel-434/prisma-extension-redis-cache#readme"
+  "homepage": "https://github.com/Gabriel-434/prisma-redis-cache#readme"
 }
