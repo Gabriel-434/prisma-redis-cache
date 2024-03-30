@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+
+# Testing Database
+test.db
+
+# Environment variables
+.env

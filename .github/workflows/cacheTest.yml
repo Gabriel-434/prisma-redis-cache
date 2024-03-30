@@ -1,0 +1,41 @@
+name: Test Prisma Extension
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test_cache:
+    name: Test Redis cache Prisma Extension
+    runs-on: ubuntu-latest
+    container: ubuntu
+    services:
+      redis:
+        image: redis:latest
+    strategy:
+      matrix:
+        node-version: ["18.x", "20.x"]
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v4
+
+    - name: Setup NodeJS version ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: "npm"
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Generate Prisma Client
+      run: npx prisma generate
+
+    - name: Push database schema
+      run: npx prisma db push
+
+    - name: Build Prisma Extension
+      run: npm run build
+
+    - name: Run Prisma Extension tests
+      run: node --test
