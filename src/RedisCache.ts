@@ -6,7 +6,7 @@ import {AllOperationsCache} from "./options.js"
 
 type RedisClient = RedisClientType<Record<string, any>, Record<string, any>, Record<string, any>>
 
-export interface CacheConfig {
+export interface ExtensionConfig {
     /** The Redis client connection */
     redisClient: RedisClient
     eventListeners?: CacheEventListeners
@@ -26,7 +26,7 @@ export default class RedisCache {
     /** Event listeners for profiling */
     #eventListeners?: CacheEventListeners
 
-    constructor(config: CacheConfig) {
+    constructor(config: ExtensionConfig) {
         this.#redis = config.redisClient
 
         this.#eventListeners = config.eventListeners

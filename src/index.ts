@@ -1,5 +1,5 @@
 import {Prisma} from "@prisma/client/extension"
-import RedisCache, {CacheConfig} from "./RedisCache.js"
+import RedisCache, {ExtensionConfig} from "./RedisCache.js"
 import type {Operations} from "./operations.js"
 
 /**
@@ -9,7 +9,7 @@ import type {Operations} from "./operations.js"
  *
  * @returns The Prisma Extension for caching operations using Redis.
  */
-function configureCache(config: CacheConfig) {
+function configureCache(config: ExtensionConfig) {
     const cache = new RedisCache(config)
 
     return Prisma.defineExtension({
@@ -26,3 +26,5 @@ function configureCache(config: CacheConfig) {
 }
 
 export default configureCache
+
+export {CacheEventListeners, ExtensionConfig} from "./RedisCache.js"
