@@ -6,15 +6,38 @@ import {AllOperationsCache} from "./options.js"
 
 type RedisClient = RedisClientType<Record<string, any>, Record<string, any>, Record<string, any>>
 
+/** The base configuration of the extension */
 export interface ExtensionConfig {
     /** The Redis client connection */
     redisClient: RedisClient
+    /** Optional event listeners for cache interaction events */
     eventListeners?: CacheEventListeners
 }
 
+/** Event listeners for cache interaction events */
 export interface CacheEventListeners<Profiler = any> {
+    /**
+     * Fired when starting handling a cached operation.
+     *
+     * @returns The profiler for measuring the operation performance.
+     * This profiler is given as a parameter after finishing handling an operation.
+     */
     start: () => Profiler
+    /**
+     * Fired after finishing handling a read operation.
+     *
+     * @param profiler The profiler returned inside the start event.
+     *
+     * @param type Whether the cache was hit or miss.
+     */
     readEnd: (profiler: Profiler, type: "hit" | "miss") => void
+    /**
+     * Fired after finishing handling a write operation.
+     *
+     * @param profiler The profiler returned inside the start event.
+     *
+     * @param type Whether the cache was created, updated, or evicted as a result of the operation.
+     */
     writeEnd: (profiler: Profiler, type: "create" | "update" | "evict") => void
 }
 
