@@ -13,7 +13,7 @@ function configureCache(config: ExtensionConfig) {
     const cache = new RedisCache(config)
 
     return Prisma.defineExtension({
-        name: "prisma-extension-redis-cache",
+        name: "prisma-redis-cache",
         model: {
             $allModels: {} as Operations
         },
