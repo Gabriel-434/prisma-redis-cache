@@ -1,0 +1,78 @@
+name: Run Continuous Integration
+
+on:
+  push:
+  release:
+    types: [created]
+
+env:
+  node-version: 20.x
+
+jobs:
+  test_extension:
+    name: Test Redis cache Prisma Extension
+    runs-on: ubuntu-latest
+    container: ubuntu
+    services:
+      redis:
+        image: redis:latest
+    strategy:
+      matrix:
+        node-version: ["18.x", "20.x"]
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v4
+
+    - name: Setup NodeJS version ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: "npm"
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Generate Prisma Client
+      run: npx prisma generate
+
+    - name: Push database schema
+      run: npx prisma db push
+
+    - name: Build Prisma Extension
+      run: npm run build
+
+    - name: Run Prisma Extension tests
+      run: node --test
+      env:
+        REDIS_CONNECTION_URL: "redis://redis"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: dist
+
+  publish_npm:
+    name: Publish Redis cache Prisma Extension to npm
+    runs-on: ubuntu-latest
+    needs: test_extension
+    if: ${{ github.event_name == 'release' }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Setup NodeJS version ${{ env.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.node-version }}
+          cache: "npm"
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+
+      - name: Publish Prisma Extension
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
