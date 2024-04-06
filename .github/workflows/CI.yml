@@ -86,6 +86,7 @@ jobs:
       - name: Setup NodeJS version ${{ env.node-version }}
         uses: actions/setup-node@v4
         with:
+          registry-url: "https://registry.npmjs.org/"
           node-version: ${{ env.node-version }}
           cache: "npm"
 
