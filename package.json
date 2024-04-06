@@ -1,6 +1,6 @@
 {
   "name": "prisma-redis-cache",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Gabriel434",
   "description": "Streamlines caching Prisma operations using Redis with strong type-safety.",
   "keywords": [
