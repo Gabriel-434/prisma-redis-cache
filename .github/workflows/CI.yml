@@ -68,6 +68,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
+          path: dist
 
       - name: Run Prisma Extension tests
         run: node --test
@@ -94,6 +95,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
+          path: dist
 
       - name: Publish Prisma Extension
         run: npm publish
