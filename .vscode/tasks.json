@@ -28,6 +28,24 @@
 				"id": "run-all",
 				"color": "terminal.ansiGreen"
 			}
+		},
+		{
+			"label": "Dev environment",
+			"detail": "Start the development environment VScode tasks",
+			"dependsOn": ["TypeScript compiler", "Tests suite"],
+			"dependsOrder": "sequence",
+			"runOptions": {
+				"runOn": "folderOpen",
+				"instanceLimit": 1
+			},
+			"icon": {
+				"id": "server-environment",
+				"color": "terminal.ansiBlue"
+			},
+			"group": {
+				"kind": "none"
+			},
+			"problemMatcher": []
 		}
 	]
 }
