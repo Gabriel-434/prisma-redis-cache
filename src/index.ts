@@ -27,4 +27,4 @@ function configureCache(config: ExtensionConfig) {
 
 export default configureCache
 
-export {CacheEventListeners, ExtensionConfig} from "./RedisCache.js"
+export {ExtensionConfig} from "./RedisCache.js"

@@ -10,35 +10,6 @@ type RedisClient = RedisClientType<Record<string, any>, Record<string, any>, Rec
 export interface ExtensionConfig {
     /** The Redis client connection */
     redisClient: RedisClient
-    /** Optional event listeners for cache interaction events */
-    eventListeners?: CacheEventListeners
-}
-
-/** Event listeners for cache interaction events */
-export interface CacheEventListeners<Profiler = any> {
-    /**
-     * Fired when starting handling a cached operation.
-     *
-     * @returns The profiler for measuring the operation performance.
-     * This profiler is given as a parameter after finishing handling an operation.
-     */
-    start: () => Profiler
-    /**
-     * Fired after finishing handling a read operation.
-     *
-     * @param profiler The profiler returned inside the start event.
-     *
-     * @param type Whether the cache was hit or miss.
-     */
-    readEnd: (profiler: Profiler, type: "hit" | "miss") => void
-    /**
-     * Fired after finishing handling a write operation.
-     *
-     * @param profiler The profiler returned inside the start event.
-     *
-     * @param type Whether the cache was created, updated, or evicted as a result of the operation.
-     */
-    writeEnd: (profiler: Profiler, type: "create" | "update" | "evict") => void
 }
 
 /** Handles interaction with the database cache */
@@ -46,13 +17,8 @@ export default class RedisCache {
     /** The Redis client */
     #redis: RedisClient
 
-    /** Event listeners for profiling */
-    #eventListeners?: CacheEventListeners
-
     constructor(config: ExtensionConfig) {
         this.#redis = config.redisClient
-
-        this.#eventListeners = config.eventListeners
     }
 
     /**
@@ -67,8 +33,6 @@ export default class RedisCache {
             return await query(queryArgs)
         }
 
-        const profiler = this.#eventListeners?.start()
-
         const key = `${model}:${cacheOptions.key}`,
             ttl = cacheOptions.ttl
 
@@ -76,16 +40,12 @@ export default class RedisCache {
             const cached = await this.#get(key)
 
             if (cached !== undefined) {
-                this.#eventListeners?.readEnd(profiler, "hit")
-
                 return cached
             }
 
             const result = await query(queryArgs)
 
             this.#set(key, result, ttl)
-
-            this.#eventListeners?.readEnd(profiler, "miss")
 
             return result
         } else {
@@ -94,16 +54,8 @@ export default class RedisCache {
 
             if (cacheOptions.update || create) {
                 this.#set(key, result, ttl)
-
-                if (create) {
-                    this.#eventListeners?.writeEnd(profiler, "create")
-                } else {
-                    this.#eventListeners?.writeEnd(profiler, "update")
-                }
             } else {
                 this.#delete(key)
-
-                this.#eventListeners?.writeEnd(profiler, "evict")
             }
 
             return result
