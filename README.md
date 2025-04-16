@@ -1,3 +1,8 @@
+> [!WARNING]
+> This small project is unmaintained. Use [Prisma Accelerate](https://www.prisma.io/accelerate).
+>
+> Originally, I made this Prisma Extension to learn more TypeScript, GitHub CI workflows, and NPM publishing.
+
 # Redis cache for Prisma
 <p align="center">
     <img src="./assets/SocialBanner.svg" width="600" title="Redis cache for Prisma banner">
